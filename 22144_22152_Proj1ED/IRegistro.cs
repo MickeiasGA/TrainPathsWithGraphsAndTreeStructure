@@ -1,4 +1,8 @@
-﻿public interface IRegistro
+﻿using System.IO;
+public interface IRegistro<Dado>
 {
-    string FormatoDeRegistro();
+    Dado LerRegistro(BinaryReader arquivo);
+    string ParaArquivo();
+    void GravarRegistro(BinaryWriter arquivo);
+
 }

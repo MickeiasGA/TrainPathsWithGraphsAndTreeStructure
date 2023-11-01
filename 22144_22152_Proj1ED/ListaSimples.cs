@@ -156,6 +156,8 @@ public class ListaSimples<Dado> where Dado : IComparable<Dado>,
         this.quantosNos = 0;
         outra.primeiro = outra.ultimo = outra.atual = outra.anterior = null;
         outra.quantosNos = 0;
+
+        return nova;
     }
 }
 
