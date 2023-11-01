@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "UU/Fxegq4qcuQqEdMakOGnsCz+pUVdWpVkM8f+ZFM5sJiRVIh92baUWgKGDQ5sX2SYHcPeTVU5kYVzJIn1Hwlg==",
+  "dgSpecHash": "NJKGlYf+RcxsUXKQLE/ksjc9E1ZGS3fu/C/NLadc2407sGvSGXY5rSzrqigy534qhX6E5IZZ7KjXD9LpdIdCSw==",
   "success": true,
-  "projectFilePath": "Z:\\22144_22152_Proj1ED\\22144_22152_Proj1ED.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\u22144\\Documents\\GitHub\\TrainPathsWithGraphsAndTreeStructure\\22144_22152_Proj1ED\\22144_22152_Proj1ED.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\u22144\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.24\\microsoft.windowsdesktop.app.ref.6.0.24.nupkg.sha512",
+    "C:\\Users\\u22144\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.24\\microsoft.netcore.app.ref.6.0.24.nupkg.sha512",
+    "C:\\Users\\u22144\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.24\\microsoft.aspnetcore.app.ref.6.0.24.nupkg.sha512",
+    "C:\\Users\\u22144\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.24\\microsoft.netcore.app.host.win-x64.6.0.24.nupkg.sha512"
+  ],
   "logs": []
 }
