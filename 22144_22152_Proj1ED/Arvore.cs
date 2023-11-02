@@ -97,22 +97,38 @@ public class Arvore<Dado>
 
     public void DesenharArvore(int x, int y, Graphics g)
     {
-        // DesenharArvore(true, raiz, x, y, 60, 1, 200, g);
-        DrawTree( false, raiz, x, y, (float)Math.PI / 2, 0.7f, 90, true, g);
+        DesenharArvore(true, raiz, x, y, 60, 0.5, 100, g);
     }
-    private void DrawTree(bool primeira, NoArvore<Dado> atual, int x, int y, float rot, float rotAdd, float size, bool esq, Graphics g) //criado para desenhar a arvore
+    private void DesenharArvore(bool primeiraVez, NoArvore<Dado> raiz,
+                int x, int y, double angulo, double incremento,
+                double comprimento, Graphics g)
     {
-        if (atual == null) return;
-        int x2 = (int)(x + Math.Cos(rot) * size);
-        int y2 = (int)(y + Math.Sin(rot) * size);
-        Pen pen = new Pen(Color.Black, 4);
-        g.DrawLine(pen, x, y, x2, y2);
-        SolidBrush brush = new SolidBrush(Color.Blue);
-        g.FillEllipse(brush, x2 - 15, y2 - 15, 30, 30);
+        int xf, yf;
+        if (raiz != null)
+        {
+            Pen caneta = new Pen(Color.Red);
+            xf = (int)Math.Round(x + Math.Cos(angulo) * comprimento);
+            yf = (int)Math.Round(y + Math.Sin(angulo) * comprimento);
+            if (primeiraVez)
+                yf = 25;
+            g.DrawLine(caneta, x, y, xf, yf);
 
-        DrawTree(false, atual.Esq, x2, y2, rot + rotAdd * (!esq && !primeira ? 0.8f : 1), rotAdd * 0.8f, size * 0.93f, true, g);
-        DrawTree(false, atual.Dir, x2, y2, rot - rotAdd * (esq && !primeira ? 0.8f : 1), rotAdd * 0.8f, size * 0.93f, false, g);
+            string texto = raiz.Info.ToString().Substring(0, 15).Trim();
+            int pixels = texto.Length * 8;
+            DesenharArvore(false, raiz.Esq, xf, yf,
+                            Math.PI / 2 + incremento,
+                            incremento * 0.60, comprimento * 0.8, g);
+            DesenharArvore(false, raiz.Dir, xf, yf,
+                            Math.PI / 2 - incremento,
+                            incremento * 0.60, comprimento * 0.8, g);
+            SolidBrush preenchimento = new SolidBrush(Color.Red);
+            g.FillEllipse(preenchimento, xf - 25, yf - 15, pixels, 30);
+            g.DrawString(texto,
+                            new Font("Comic Sans", 10),
+                            new SolidBrush(Color.Black), xf - 23, yf - 7);
+        }
     }
+    
 
 public bool Existe(Dado procurado)
    {

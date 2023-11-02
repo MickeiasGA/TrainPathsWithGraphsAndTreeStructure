@@ -7,8 +7,9 @@ namespace _22144_22152_Proj1ED
             InitializeComponent();
         }
 
-        private Arvore<Cidade> arvore; //arvore das cidades
-        private Arvore<Cidade> arvoreCaminhos; //arvore dos caminhos
+        private Arvore<Cidade> arvore; //arvore das cidades (exibida no dgvCidades)
+        private Arvore<Cidade> arvoreAux; //arvore auxiliar (utilizada para incluir cidades)
+        private Arvore<Cidade> arvoreCaminhos; //arvore dos caminhos (exibida no dgvGrafos)
         private void Form1_Load(object sender, EventArgs e)
         //AO ABRIR O FOMULÁRIO, É NESCESSÁRIO ESCOLHER O ARQUIVO 'CIDADES.DAT' E DPS 'CAMINHOS.DAT'
         {

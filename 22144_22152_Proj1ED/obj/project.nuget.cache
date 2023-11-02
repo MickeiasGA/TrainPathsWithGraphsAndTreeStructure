@@ -1,13 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4g2fsowfsagFY6y0CgyPbVfZ8ZauiFoZkgrzTH8eNjHCxecyC8lcKL2Ui9E/xFCLFq1MVfVMuiuPIjUcOrKM/g==",
+  "dgSpecHash": "egErXtCvSIr0+RRx5E8Te9PPpKjI5DWEmo05CQgJASsJXK8STB2cTJ1GrUejtChHvtj96bMJH6sl5VVFmVIQeg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\eletro\\Documents\\TrainPathsWithGraphsAndTreeStructure\\22144_22152_Proj1ED\\22144_22152_Proj1ED.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\eletro\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.23\\microsoft.windowsdesktop.app.ref.6.0.23.nupkg.sha512",
-    "C:\\Users\\eletro\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.23\\microsoft.netcore.app.ref.6.0.23.nupkg.sha512",
-    "C:\\Users\\eletro\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.23\\microsoft.aspnetcore.app.ref.6.0.23.nupkg.sha512",
-    "C:\\Users\\eletro\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.23\\microsoft.netcore.app.host.win-x64.6.0.23.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\Users\\sanshe\\Desktop\\TrainPathsWithGraphsAndTreeStructure\\22144_22152_Proj1ED\\22144_22152_Proj1ED.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }

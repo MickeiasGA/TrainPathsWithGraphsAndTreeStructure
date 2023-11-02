@@ -20,7 +20,6 @@ C:\Users\sanshe\Desktop\TrainPathsWithGraphsAndTreeStructure\22144_22152_Proj1ED
 C:\Users\sanshe\Desktop\TrainPathsWithGraphsAndTreeStructure\22144_22152_Proj1ED\bin\Debug\net6.0-windows\22144_22152_Proj1ED.runtimeconfig.json
 C:\Users\sanshe\Desktop\TrainPathsWithGraphsAndTreeStructure\22144_22152_Proj1ED\bin\Debug\net6.0-windows\22144_22152_Proj1ED.dll
 C:\Users\sanshe\Desktop\TrainPathsWithGraphsAndTreeStructure\22144_22152_Proj1ED\bin\Debug\net6.0-windows\22144_22152_Proj1ED.pdb
-C:\Users\sanshe\Desktop\TrainPathsWithGraphsAndTreeStructure\22144_22152_Proj1ED\obj\Debug\net6.0-windows\22144_22152_Proj1ED.csproj.AssemblyReference.cache
 C:\Users\sanshe\Desktop\TrainPathsWithGraphsAndTreeStructure\22144_22152_Proj1ED\obj\Debug\net6.0-windows\_22144_22152_Proj1ED.Form1.resources
 C:\Users\sanshe\Desktop\TrainPathsWithGraphsAndTreeStructure\22144_22152_Proj1ED\obj\Debug\net6.0-windows\_22144_22152_Proj1ED.Properties.Resources.resources
 C:\Users\sanshe\Desktop\TrainPathsWithGraphsAndTreeStructure\22144_22152_Proj1ED\obj\Debug\net6.0-windows\22144_22152_Proj1ED.csproj.GenerateResource.cache
