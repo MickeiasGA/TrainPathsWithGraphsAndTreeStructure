@@ -8,112 +8,113 @@ using System.IO;
 using System.ComponentModel;
 
 public class Arvore<Dado>
-             where Dado : IComparable<Dado>, IRegistroArvore, new() 
+    where Dado : IComparable<Dado>, IRegistroArvore, new()
 {
-   private NoArvore<Dado> raiz, atual, antecessor;
-   public NoArvore<Dado> Raiz { get => raiz; set => raiz = value; }
-   public NoArvore<Dado> Atual { get => atual; set => atual = value; }
-   public NoArvore<Dado> Antecessor { get => antecessor; set => antecessor = value; }
+    private NoArvore<Dado> raiz, atual, antecessor;
 
-   public Arvore()
-   {
-      raiz = atual = antecessor = null;
-   }
-
-   public void LerArquivoDeRegistros(string nomeArquivo)
-   {
-      raiz = null;
-      Dado dado = new Dado();
-      var origem = new FileStream(nomeArquivo, FileMode.OpenOrCreate);
-      var arquivo = new BinaryReader(origem);
-      int posicaoFinal = (int)origem.Length / dado.TamanhoRegistro - 1;
-      Particionar(0, posicaoFinal, ref raiz);
-      origem.Close();
-
-      void Particionar(long inicio, long fim, ref NoArvore<Dado> atual)
-      {
-         if (inicio <= fim)
-         {
-            long meio = (inicio + fim) / 2;  // registro do meio da partição sob leitura
-            dado = new Dado();               // cria um objeto para armazenar os dados
-            dado.LerRegistro(arquivo, meio); //
-            atual = new NoArvore<Dado>(dado);
-            var novoEsq = atual.Esq;
-            Particionar(inicio, meio - 1, ref novoEsq); // Particiona à esquerda
-            atual.Esq = novoEsq;
-            var novoDir = atual.Dir;
-            Particionar(meio + 1, fim, ref novoDir); // Particiona à direita
-            atual.Dir = novoDir;
-         }
-      }
-   }
-
-    public void ExibirDados(NoArvore<Dado> no, DataGridView dgv)
+    public NoArvore<Dado> Raiz
     {
-        if (no != null)
+        get => raiz;
+        set => raiz = value;
+    }
+
+    public NoArvore<Dado> Atual
+    {
+        get => atual;
+        set => atual = value;
+    }
+
+    public NoArvore<Dado> Antecessor
+    {
+        get => antecessor;
+        set => antecessor = value;
+    }
+
+    public Arvore()
+    {
+        raiz = atual = antecessor = null;
+    }
+
+    public void LerArquivoDeRegistros(string nomeArquivo)
+    {
+        raiz = null;
+        Dado dado = new Dado();
+        var origem = new FileStream(nomeArquivo, FileMode.OpenOrCreate);
+        var arquivo = new BinaryReader(origem);
+        int posicaoFinal = (int)origem.Length / dado.TamanhoRegistro - 1;
+        Particionar(0, posicaoFinal, ref raiz);
+        origem.Close();
+
+        void Particionar(long inicio, long fim, ref NoArvore<Dado> atual)
         {
-            // Exibe os dados do nó atual
-            dgv.Rows.Add(0, no.Info.ToString().Substring(0, 15)); //nome
-            dgv.Rows.Add(1, no.Info.ToString().Substring(16, 6)); //x
-            dgv.Rows.Add(2, no.Info.ToString().Substring(23, 6)); //y
-
-            // chama ExibirDados para o nó da esquerda
-            ExibirDados(no.Esq, dgv);
-
-            // chama ExibirDados para o nó da direita
-            ExibirDados(no.Dir, dgv);
+            if (inicio <= fim)
+            {
+                long meio = (inicio + fim) / 2; // registro do meio da partição sob leitura
+                dado = new Dado(); // cria um objeto para armazenar os dados
+                dado.LerRegistro(arquivo, meio); //
+                atual = new NoArvore<Dado>(dado);
+                var novoEsq = atual.Esq;
+                Particionar(inicio, meio - 1, ref novoEsq); // Particiona à esquerda
+                atual.Esq = novoEsq;
+                var novoDir = atual.Dir;
+                Particionar(meio + 1, fim, ref novoDir); // Particiona à direita
+                atual.Dir = novoDir;
+            }
         }
     }
 
-   public void GravarArquivoDeRegistros(string nomeArquivo)
-   {
-      var destino = new FileStream(nomeArquivo, FileMode.Create);
-      var arquivo = new BinaryWriter(destino);
-      GravarInOrdem(raiz);
-      arquivo.Close();
-      void GravarInOrdem(NoArvore<Dado> r)
-      {
-         if (r != null)
-         {
-            GravarInOrdem(r.Esq);
-            r.Info.GravarRegistro(arquivo);
-            GravarInOrdem(r.Dir);
-         }
-      }
-   }
+    public void ExibirDados(NoArvore<Dado> no, DataGridView dgv)
+    {
+        if (no != null) //fim da recursão
+        {
+            // Exibe os dados do nó atual
+            dgv.Rows.Add(no.Info.ToString().Substring(0, 15), no.Info.ToString().Substring(16, 6),
+                no.Info.ToString().Substring(23, 6)); //nome, x, y
 
-   public void DesenharArvore(int x, int y, Graphics g)
-   {
-      DesenharArvore(true, raiz, x, y, 60, 0.5, 100, g);
-   }
-   private void DesenharArvore(bool primeiraVez, NoArvore<Dado> raiz,
-               int x, int y, double angulo, double incremento,
-               double comprimento, Graphics g)
-   {
-      int xf, yf;
-      if (raiz != null)
-      {
-         Pen caneta = new Pen(Color.Red);
-         xf = (int)Math.Round(x + Math.Cos(angulo) * comprimento);
-         yf = (int)Math.Round(y + Math.Sin(angulo) * comprimento);
-         if (primeiraVez)
-            yf = 25;
-         g.DrawLine(caneta, x, y, xf, yf);
+            ExibirDados(no.Esq, dgv); // chama ExibirDados para o nó da esquerda (recursividade)
 
-         DesenharArvore(false, raiz.Esq, xf, yf,
-                        Math.PI / 2 + incremento,
-                        incremento * 0.60, comprimento * 0.8, g);
-         DesenharArvore(false, raiz.Dir, xf, yf,
-                        Math.PI / 2 - incremento,
-                        incremento * 0.60, comprimento * 0.8, g);
-         SolidBrush preenchimento = new SolidBrush(Color.Blue);
-         g.FillEllipse(preenchimento, xf - 25, yf - 15, 42, 30);
-         g.DrawString(Convert.ToString(raiz.Info.ToString()),
-                      new Font("Comic Sans", 10),
-                      new SolidBrush(Color.Yellow), xf - 23, yf - 7);
-      }
-   }
-   public bool Existe(Dado procurado)
+            ExibirDados(no.Dir, dgv); // chama ExibirDados para o nó da direita (recursividade)
+        }
+    }
+
+    public void GravarArquivoDeRegistros(string nomeArquivo)
+    {
+        var destino = new FileStream(nomeArquivo, FileMode.Create);
+        var arquivo = new BinaryWriter(destino);
+        GravarInOrdem(raiz);
+        arquivo.Close();
+
+        void GravarInOrdem(NoArvore<Dado> r)
+        {
+            if (r != null)
+            {
+                GravarInOrdem(r.Esq);
+                r.Info.GravarRegistro(arquivo);
+                GravarInOrdem(r.Dir);
+            }
+        }
+    }
+
+    public void DesenharArvore(int x, int y, Graphics g)
+    {
+        // DesenharArvore(true, raiz, x, y, 60, 1, 200, g);
+        DrawTree( false, raiz, x, y, (float)Math.PI / 2, 0.7f, 90, true, g);
+    }
+    private void DrawTree(bool primeira, NoArvore<Dado> atual, int x, int y, float rot, float rotAdd, float size, bool esq, Graphics g) //criado para desenhar a arvore
+    {
+        if (atual == null) return;
+        int x2 = (int)(x + Math.Cos(rot) * size);
+        int y2 = (int)(y + Math.Sin(rot) * size);
+        Pen pen = new Pen(Color.Black, 4);
+        g.DrawLine(pen, x, y, x2, y2);
+        SolidBrush brush = new SolidBrush(Color.Blue);
+        g.FillEllipse(brush, x2 - 15, y2 - 15, 30, 30);
+
+        DrawTree(false, atual.Esq, x2, y2, rot + rotAdd * (!esq && !primeira ? 0.8f : 1), rotAdd * 0.8f, size * 0.93f, true, g);
+        DrawTree(false, atual.Dir, x2, y2, rot - rotAdd * (esq && !primeira ? 0.8f : 1), rotAdd * 0.8f, size * 0.93f, false, g);
+    }
+
+public bool Existe(Dado procurado)
    {
       antecessor = null;
       atual = raiz;
@@ -164,7 +165,7 @@ public class Arvore<Dado>
       while (atual.Info.CompareTo(registroARemover) != 0) // enqto não acha a chave a remover
       {
          antecessor = atual;
-         if (atual.Info.CompareTo(registroARemover) > 0)
+         if (atual.Info.CompareTo(registroARemover) < 0)
          {
             ehFilhoEsquerdo = true;
             atual = atual.Esq;

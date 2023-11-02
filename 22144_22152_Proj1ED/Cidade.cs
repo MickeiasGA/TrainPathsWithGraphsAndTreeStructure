@@ -15,15 +15,14 @@ class Cidade : IComparable<Cidade>, IRegistroArvore
     string nome;
     double x, y;
 
-    public string Nome { get => nome; set => nome = value.PadRight(tamNome, ' ').Substring(0, tamNome); }
+    public string Nome { get => nome; set => nome = value.PadRight(15).Substring(0, 15); }
     public double X { get => x; set => x = value; }
     public double Y { get => y; set => y = value; }
-    public int TamanhoRegistro //Implementado para a interface IRegistroArvore
+    public int TamanhoRegistro //implementado para a interface IRegistroArvore
     {
         get
         {
-            Cidade dado = new Cidade();
-            return dado.TamanhoRegistro;
+            return 31; //15 + (sizeof(double)*2)
         }
     }
 
@@ -34,43 +33,48 @@ class Cidade : IComparable<Cidade>, IRegistroArvore
         Y = y;
     }
 
-    public Cidade() //Implementado para a interface IRegistroArvore
-    {
+    public Cidade() //construtor vazio
+    { 
         Nome = "Exemplo";
         X = 0;
-        Y = 0;
+        Y = 0; 
     }
 
-    public int CompareTo(Cidade outro)
+    public int CompareTo(Cidade other) //modificado
     {
-        return Nome.ToLowerInvariant().CompareTo(outro.Nome.ToLowerInvariant());
+        int nomeComparison = string.Compare(nome, other.nome, StringComparison.Ordinal); //compara os nomes
+        if (nomeComparison != 0) return nomeComparison;
+        int xComparison = x.CompareTo(other.x); //compara as coordenadas X
+        if (xComparison != 0) return xComparison;
+        return y.CompareTo(other.y); //compara as coordenadas Y
     }
 
     public void LerRegistro(BinaryReader arquivo, long qualRegistro)
     {
-      if (arquivo != null) // arquivo aberto?
-      {
-        string linha = arquivo.ReadString();
-        Nome = linha.Substring(iniNome, tamNome);
-        X = int.Parse(linha.Substring(iniX, tamX));
-        Y = int.Parse(linha.Substring(iniY));
-      }
+        if (arquivo != null) // arquivo aberto?
+        {
+            Nome = System.Text.Encoding.UTF8.GetString(arquivo.ReadBytes(15)); //le os primeiros 15 bytes do arquivo e converte para uma string usando UTF-8.
+            X = arquivo.ReadDouble(); //le o double a seguir do nome, que é a coordenada X
+            Y = arquivo.ReadDouble(); //le o outro double, que é a coordenada Y
+        }
     }
 
-    public void GravarRegistro(BinaryWriter arq)
+    public void GravarRegistro(BinaryWriter arq) //modificado
     {
-      if (arq != null)  // arquivo de saída aberto?
-      {
-        arq.Write(ParaArquivo());
-      }
+        if (arq != null)  // arquivo de saída aberto?
+        {
+            arq.Write(Nome); //escreve o nome
+            arq.Write(X); //escreve a coordenada X
+            arq.Write(Y); //escreve a coordenada Y
+        }
     }
     public string ParaArquivo()
     {
-      return Nome + X.ToString() + Y.ToString();
+        return Nome + X.ToString() + Y.ToString();
     }
 
-    public override string ToString()
+    public override string ToString()//modificado
     {
-      return Nome + " " + X.ToString().PadLeft(tamX,' ') + Y.ToString().PadLeft(tamY, ' ');
+        return $"{Nome}0{X:N4}0{Y:N4}"; //formatado para escrever adequadamente de acordo com o número de bytes do arquivo 'cidades.dat'
     }
-  }
+}

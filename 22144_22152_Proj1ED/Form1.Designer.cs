@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             tcMain = new TabControl();
             tabMapa = new TabPage();
+            btnExibir = new Button();
             tcReader = new TabControl();
             tpCidades = new TabPage();
             dgvCidades = new DataGridView();
@@ -47,12 +48,11 @@
             btnAlterar = new Button();
             btnExcluir = new Button();
             btnIncluir = new Button();
-            textBox1 = new TextBox();
+            txtNome = new TextBox();
             tabArvore = new TabPage();
             pictureBox1 = new PictureBox();
             la = new System.ComponentModel.BackgroundWorker();
             ofdCidades = new OpenFileDialog();
-            btnExibir = new Button();
             tcMain.SuspendLayout();
             tabMapa.SuspendLayout();
             tcReader.SuspendLayout();
@@ -84,7 +84,7 @@
             tabMapa.Controls.Add(btnAlterar);
             tabMapa.Controls.Add(btnExcluir);
             tabMapa.Controls.Add(btnIncluir);
-            tabMapa.Controls.Add(textBox1);
+            tabMapa.Controls.Add(txtNome);
             tabMapa.Location = new Point(4, 24);
             tabMapa.Name = "tabMapa";
             tabMapa.Padding = new Padding(3);
@@ -92,6 +92,16 @@
             tabMapa.TabIndex = 0;
             tabMapa.Text = "Mapa";
             tabMapa.UseVisualStyleBackColor = true;
+            // 
+            // btnExibir
+            // 
+            btnExibir.Location = new Point(383, 16);
+            btnExibir.Name = "btnExibir";
+            btnExibir.Size = new Size(75, 23);
+            btnExibir.TabIndex = 11;
+            btnExibir.Text = "Exibir";
+            btnExibir.UseVisualStyleBackColor = true;
+            btnExibir.Click += btnExibir_Click;
             // 
             // tcReader
             // 
@@ -192,6 +202,8 @@
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox2.TabIndex = 9;
             pictureBox2.TabStop = false;
+            pictureBox2.Click += pictureBox2_Click;
+            pictureBox2.Paint += pictureBox2_Paint;
             // 
             // btnAlterar
             // 
@@ -223,12 +235,12 @@
             btnIncluir.UseVisualStyleBackColor = true;
             btnIncluir.Click += btnIncluir_Click;
             // 
-            // textBox1
+            // txtNome
             // 
-            textBox1.Location = new Point(18, 16);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(100, 23);
-            textBox1.TabIndex = 5;
+            txtNome.Location = new Point(18, 16);
+            txtNome.Name = "txtNome";
+            txtNome.Size = new Size(100, 23);
+            txtNome.TabIndex = 5;
             // 
             // tabArvore
             // 
@@ -248,20 +260,11 @@
             pictureBox1.Size = new Size(995, 428);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
+            pictureBox1.Paint += pictureBox1_Paint;
             // 
             // ofdCidades
             // 
             ofdCidades.FileName = "openFileDialog1";
-            // 
-            // btnExibir
-            // 
-            btnExibir.Location = new Point(383, 16);
-            btnExibir.Name = "btnExibir";
-            btnExibir.Size = new Size(75, 23);
-            btnExibir.TabIndex = 11;
-            btnExibir.Text = "Exibir";
-            btnExibir.UseVisualStyleBackColor = true;
-            btnExibir.Click += btnExibir_Click;
             // 
             // Form1
             // 
@@ -295,7 +298,7 @@
         private Button btnAlterar;
         private Button btnExcluir;
         private Button btnIncluir;
-        private TextBox textBox1;
+        private TextBox txtNome;
         private PictureBox pictureBox1;
         private TabControl tcReader;
         private TabPage tpCidades;
