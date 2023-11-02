@@ -2,8 +2,8 @@
 using System.IO;
 
 
-  class Cidade : IComparable<Cidade>, IRegistro<Cidade>
-  {
+class Cidade : IComparable<Cidade>, IRegistroArvore
+{
     const int tamNome = 15,
               tamX = 6,
               tamY = 6;
@@ -15,9 +15,17 @@ using System.IO;
     string nome;
     double x, y;
 
-    public string Nome   { get => nome; set => nome = value.PadRight(tamNome, ' ').Substring(0, tamNome); }
-    public double X         { get => x; set => x = value; }
-    public double Y         { get => y; set => y = value; }
+    public string Nome { get => nome; set => nome = value.PadRight(tamNome, ' ').Substring(0, tamNome); }
+    public double X { get => x; set => x = value; }
+    public double Y { get => y; set => y = value; }
+    public int TamanhoRegistro //Implementado para a interface IRegistroArvore
+    {
+        get
+        {
+            Cidade dado = new Cidade();
+            return dado.TamanhoRegistro;
+        }
+    }
 
     public Cidade(string nome, int x, int y)
     {
@@ -26,12 +34,19 @@ using System.IO;
         Y = y;
     }
 
+    public Cidade() //Implementado para a interface IRegistroArvore
+    {
+        Nome = "Exemplo";
+        X = 0;
+        Y = 0;
+    }
+
     public int CompareTo(Cidade outro)
     {
         return Nome.ToLowerInvariant().CompareTo(outro.Nome.ToLowerInvariant());
     }
 
-    public Cidade LerRegistro(BinaryReader arquivo)
+    public void LerRegistro(BinaryReader arquivo, long qualRegistro)
     {
       if (arquivo != null) // arquivo aberto?
       {
@@ -39,9 +54,7 @@ using System.IO;
         Nome = linha.Substring(iniNome, tamNome);
         X = int.Parse(linha.Substring(iniX, tamX));
         Y = int.Parse(linha.Substring(iniY));
-        return this; // retorna o próprio objeto Contato, com os dados
       }
-      return default(Cidade);
     }
 
     public void GravarRegistro(BinaryWriter arq)

@@ -7,17 +7,15 @@ namespace _22144_22152_Proj1ED
             InitializeComponent();
         }
 
+        private Arvore<Cidade> arvore;
         private void Form1_Load(object sender, EventArgs e)
         {
-            if (ofdCidades.ShowDialog() == DialogResult.OK)
+            if (ofdCidades.ShowDialog() == DialogResult.OK) // OpenFileDialog para escolher o arquivo de cidades
             {
-                string path = ofdCidades.FileName;
-                FileInfo file = new FileInfo(path);
-                BinaryReader fReader = new BinaryReader(new FileStream(path, FileMode.OpenOrCreate));
-                for(int i = 0; i < file.Length; i++)
-                {
-                    
-                }
+                string path = ofdCidades.FileName; //caminho do arquivo escolhido
+                arvore = new Arvore<Cidade>(); //cria a instância de uma arvore
+                arvore.LerArquivoDeRegistros(path); //le os arquivos
+                arvore.ExibirDados(arvore.Raiz, dgvCidades); //exibi os arquivos
             }
 
         }
@@ -33,6 +31,11 @@ namespace _22144_22152_Proj1ED
         }
 
         private void btnAlterar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnExibir_Click(object sender, EventArgs e)
         {
 
         }

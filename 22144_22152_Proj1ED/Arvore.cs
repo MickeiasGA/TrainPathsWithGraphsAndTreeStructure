@@ -8,7 +8,7 @@ using System.IO;
 using System.ComponentModel;
 
 public class Arvore<Dado>
-             where Dado : IComparable<Dado>, IRegistroArvore, new()
+             where Dado : IComparable<Dado>, IRegistroArvore, new() 
 {
    private NoArvore<Dado> raiz, atual, antecessor;
    public NoArvore<Dado> Raiz { get => raiz; set => raiz = value; }
@@ -50,11 +50,18 @@ public class Arvore<Dado>
 
     public void ExibirDados(NoArvore<Dado> no, DataGridView dgv)
     {
-        while (no != null)
+        if (no != null)
         {
-            dgv.Rows.Add(0, no.Info.ToString().Substring(0,15)); //nome
+            // Exibe os dados do nó atual
+            dgv.Rows.Add(0, no.Info.ToString().Substring(0, 15)); //nome
             dgv.Rows.Add(1, no.Info.ToString().Substring(16, 6)); //x
             dgv.Rows.Add(2, no.Info.ToString().Substring(23, 6)); //y
+
+            // chama ExibirDados para o nó da esquerda
+            ExibirDados(no.Esq, dgv);
+
+            // chama ExibirDados para o nó da direita
+            ExibirDados(no.Dir, dgv);
         }
     }
 
