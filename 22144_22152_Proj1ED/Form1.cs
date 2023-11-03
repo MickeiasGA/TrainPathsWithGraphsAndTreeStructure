@@ -1,3 +1,7 @@
+using System;
+using System.IO;
+using System.Text;
+
 namespace _22144_22152_Proj1ED
 {
     public partial class Form1 : Form
@@ -10,6 +14,39 @@ namespace _22144_22152_Proj1ED
         private Arvore<Cidade> arvore; //arvore das cidades (exibida no dgvCidades)
         private Arvore<Cidade> arvoreAux; //arvore auxiliar (utilizada para incluir cidades)
         private Arvore<Cidade> arvoreCaminhos; //arvore dos caminhos (exibida no dgvGrafos)
+
+        public bool ProcurarNome(string nome, out Cidade cidade)
+        {
+            NoArvore<Cidade> atual = arvore.Raiz;
+            cidade = null;
+
+            while (atual != null)
+            {
+                int compare = String.Compare(atual.Info.Nome.Trim(), nome.Trim(), StringComparison.Ordinal);
+                if (compare == 0)
+                {
+                    cidade = atual.Info;
+                    return true;
+                }
+                if (compare > 0)
+                {
+                    atual = atual.Esq;
+                }
+                else
+                {
+                    atual = atual.Dir;
+                }
+            }
+
+            return false;
+        }
+
+        public void AddCaminho(string de, string para, int distancia, int tempo)
+        {
+            if (!ProcurarNome(de, out Cidade cidadeDe)) return;
+            cidadeDe.Caminhos.InserirAposFim(new Caminho(de, para, distancia, tempo));
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         //AO ABRIR O FOMULÁRIO, É NESCESSÁRIO ESCOLHER O ARQUIVO 'CIDADES.DAT' E DPS 'CAMINHOS.DAT'
         {
@@ -25,16 +62,47 @@ namespace _22144_22152_Proj1ED
             //depois escolhe os caminhos 
             if (ofdCidades.ShowDialog() == DialogResult.OK) // OpenFileDialog para escolher o arquivo de grafos
             { //mesmo procedimento de antes
-                string path = ofdCidades.FileName;
-                arvoreCaminhos = new Arvore<Cidade>();
-                arvoreCaminhos.LerArquivoDeRegistros(path);
-                arvoreCaminhos.ExibirDados(arvoreCaminhos.Raiz, dgvGrafos);
+                var origem = new FileStream(ofdCidades.FileName, FileMode.OpenOrCreate);
+                var arquivo = new BinaryReader(origem);
+                try
+                {
+                    // will read the file and add the paths to the cities
+                    while (arquivo.BaseStream.Position < arquivo.BaseStream.Length)
+                    {
+                        string de = Encoding.UTF8.GetString(arquivo.ReadBytes(15));
+                        string para = Encoding.UTF8.GetString(arquivo.ReadBytes(15));
+                        int distancia = arquivo.ReadInt32();
+                        int tempo = arquivo.ReadInt32();
+                        AddCaminho(de, para, distancia, tempo);
+                    }
+
+                    dgvGrafos.Rows.Clear();
+                    void Percorrer(NoArvore<Cidade> atual)
+                    {
+                        if (atual != null)
+                        {
+                            ListaSimples<Caminho> caminhos = atual.Info.Caminhos;
+                            caminhos.IniciarPercursoSequencial();
+
+                            while (caminhos.PodePercorrer())
+                            {
+                                dgvGrafos.Rows.Add(atual.Info.Nome, caminhos.Atual.Info.Para, caminhos.Atual.Info.Distancia, caminhos.Atual.Info.Tempo);
+                            }
+
+                            Percorrer(atual.Esq);
+                            Percorrer(atual.Dir);
+                        }
+                    }
+                    Percorrer(arvore.Raiz);
+
+                    origem.Close();
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(null, "Arquivo inválido!", "Erro");
+                    origem.Close();
+                }
             }
-        }
-
-        private void Existe(string cidade)
-        {
-
         }
 
         private void btnIncluir_Click(object sender, EventArgs e)
@@ -102,6 +170,33 @@ namespace _22144_22152_Proj1ED
                 //recursividade
             }
             Percorrer(arvore.Raiz); //percorre a arvore a partir da raiz
+
+
+            //void Caminhos(NoArvore<Cidade> atual)
+            //{
+            //    if (atual != null)
+            //    {
+            //        ListaSimples<Caminho> caminhos = atual.Info.Caminhos;
+            //        caminhos.IniciarPercursoSequencial();
+
+            //        while (caminhos.PodePercorrer())
+            //        {
+            //            if (ProcurarNome(caminhos.Atual.Info.Para.Trim(), out Cidade cidadePara))
+            //            {
+            //                Pen pen = new Pen(Color.Black, 3);
+            //                if (caminhos.Atual.Info.De == arvore.Raiz.Info?.Nome)
+            //                {
+            //                    pen = new Pen(Color.Green, 3);
+            //                }
+            //                e.Graphics.DrawLine(pen, (float)atual.Info.X * pictureBox2.Width, (float)atual.Info.Y * pictureBox2.Height, (float)cidadePara.X * pictureBox2.Width, (float)cidadePara.Y * pictureBox2.Height);
+            //            }
+            //        }
+
+            //        Caminhos(atual.Esq);
+            //        Caminhos(atual.Dir);
+            //    }
+            //}
+            //Caminhos(arvore.Raiz);
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)

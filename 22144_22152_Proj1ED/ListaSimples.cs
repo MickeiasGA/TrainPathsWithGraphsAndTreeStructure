@@ -37,6 +37,13 @@ public class ListaSimples<Dado> where Dado : IComparable<Dado>,
         return lista;
     }
 
+    public void IniciarPercursoSequencial()
+    {
+        primeiroAcessoDoPercurso = true;
+        atual = primeiro;
+        anterior = null;
+    }
+
     public void InserirAntesDoInicio(Dado novoDado)
     {
         var novoNo = new NoLista<Dado>(novoDado);
@@ -59,6 +66,19 @@ public class ListaSimples<Dado> where Dado : IComparable<Dado>,
         ultimo = novoNo;
         ultimo.Prox = null;
         quantosNos++;
+    }
+
+    public bool PodePercorrer() //verifica se é possível percorrer o percurso
+    {
+        if (!primeiroAcessoDoPercurso)
+        {
+            anterior = atual;
+            atual = atual.Prox;
+        }
+        else
+            primeiroAcessoDoPercurso = false;
+
+        return atual != null;
     }
 
     public void InserirAposFim(NoLista<Dado> noExistente)
